@@ -1,0 +1,24 @@
+{
+  "name": "maison-frontend",
+  "version": "0.1.0",
+  "description": "The frontend code for maison",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Cadey",
+  "license": "0BSD",
+  "dependencies": {
+    "choo": "^7.0.0",
+    "nanohtml": "^1.6.3"
+  },
+  "private": true,
+  "browserify": {
+    "transform": [
+      "nanohtml"
+    ]
+  },
+  "devDependencies": {
+    "tinyify": "^2.5.1"
+  }
+}

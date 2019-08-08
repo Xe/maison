@@ -1,0 +1,26 @@
+#? stdtmpl(subsChar = '$', metaChar = '#')
+#proc genIndex(title: string): string =
+#  result = ""
+<html>
+  <head>
+    <title>$title</title>
+    <link rel="stylesheet" href="/gruvbox.css">
+    <script src="/bundle.js"></script>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/png" href="/favicon.png">
+  </head>
+
+  <body>
+    <main>
+      <nav class="nav">
+        <a href="/">Maison</a>
+      </nav>
+
+      <div id="content"></div>
+
+      <footer>
+        <p>From <a href="https://within.website">Within</a> - <a href="https://darksky.net/poweredby/">Powered by DarkSky</a></p>
+      </footer>
+    </main>
+  </body>
+</html>
