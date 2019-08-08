@@ -15,7 +15,6 @@ type
 
 proc getCurrentWeather(apiKey: string, loc: string, hc = newAsyncHttpClient()): Future[Weather] {.async.} =
   let url = fmt"https://api.darksky.net/forecast/{apiKey}/{loc}?units=si"
-  info "grabbing data from darksky"
   let body = await hc.getContent(url)
   return to(parseJson(body), Weather)
 

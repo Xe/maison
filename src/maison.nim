@@ -2,7 +2,8 @@ import asyncdispatch, dotenv, jester, json, os, strutils, times
 
 import maisonPkg/[darksky, front]
 
-initDotEnv().overload
+try: initDotEnv().overload
+except: discard
 
 include "./maisonPkg/index.tmpl"
 
@@ -20,7 +21,7 @@ routes:
     resp Http200, $j, "application/json"
 
   get "/":
-    resp Http200, genIndex("Donn&eacute;es pour notre maison"), "text/html"
+    resp Http200, genIndex("Données pour notre maison"), "text/html; charset=utf-8"
 
   error Http404:
-    resp Http404, genIndex("Oops!"), "text/html"
+    resp Http404, genIndex("Oops!"), "text/html; charset=utf-8"
