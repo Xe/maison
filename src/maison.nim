@@ -17,7 +17,6 @@ routes:
 
   get "/api/front":
     let j = %* await frontCached()
-
     resp Http200, $j, "application/json"
 
   get "/":
