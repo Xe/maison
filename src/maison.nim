@@ -12,8 +12,7 @@ settings:
 
 routes:
   get "/api/weather":
-    let w = await getCachedWeather(getEnv("DARKSKY_KEY"), getEnv("WEATHER_LOCATION"))
-    let j = %w
+    let j = %* await getCachedWeather(getEnv("DARKSKY_KEY"), getEnv("WEATHER_LOCATION"))
     resp Http200, $j, "application/json"
 
   get "/api/front":
