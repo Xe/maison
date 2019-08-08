@@ -26,7 +26,6 @@ task fullbuild, "runs build steps":
 
 task setup, "does basic setup stuffs":
   exec "npm install -g browserify"
-  exec "git remote add dokku dokku@minipaas.xeserv.us:maison"
 
   withDir "frontend":
     exec "npm install"
