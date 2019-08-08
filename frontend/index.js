@@ -37,26 +37,21 @@ function mainView (state, emit) {
     }
 }
 
+function jsonOf(route, handler) {
+    return fetch(route).then(response => response.json().then(handler));
+}
+
 function dataStore (state, emitter) {
     state.weather = {};
     state.front = "";
     state.gottenData = false;
-    emitter.on("check_data", function () {
-        fetch("/api/weather")
-            .then(function (response) {
-                response.json().then(function(data) {
-                    state.weather = data.currently;
-                });
-            });
-
-        fetch("/api/front")
-            .then(function (response) {
-                response.json().then(function(data) {
-                    state.front = data.who;
-                    state.gottenData = true;
-                    emitter.emit("render");
-                });
-            });
+    emitter.on("check_data", async function () {
+        await jsonOf("/api/weather", data => state.weather = data.currently);
+        await jsonOf("/api/front", data => {
+                state.front = data.who;
+                state.gottenData = true;
+                emitter.emit("render");
+        });
     });
 }
 
