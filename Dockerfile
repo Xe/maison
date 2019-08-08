@@ -11,4 +11,5 @@ ENV PORT 5000
 RUN apk --no-cache add openssl ||:
 COPY --from=build /maison/bin/maison /usr/local/bin/maison
 COPY --from=build /maison/public ./public
+RUN mkdir -p var/cache
 CMD maison
