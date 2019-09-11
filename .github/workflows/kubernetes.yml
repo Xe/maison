@@ -37,6 +37,7 @@ jobs:
       uses: "docker://xena/dyson:0.1.0"
       with:
         args: |
+          manifest \
           --name=maison \
           --domain=maison.within.website \
           --dockerImage=xena/maison:$(echo $GITHUB_SHA | head -c7) \
