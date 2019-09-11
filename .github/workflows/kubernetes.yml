@@ -23,7 +23,7 @@ jobs:
     - name: Build container image
       uses: actions/docker/cli@master
       with:
-        args: build -t xena/maison:$GITHUB_SHA
+        args: build -t xena/maison:$GITHUB_SHA .
     - name: Docker Login
       uses: actions/docker/login@master
       env:
