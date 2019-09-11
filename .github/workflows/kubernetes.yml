@@ -27,7 +27,7 @@ jobs:
         echo $FILE_DATA | base64 -d > ~/.ssh/id_rsa
         md5sum ~/.ssh/id_rsa
         chmod 600 ~/.ssh/id_rsa
-        git clone git@ssh.tulpa.dev:cadey/within-terraform-secret /github/workspace/within-terraform-secret
+        git clone git@ssh.tulpa.dev:cadey/within-terraform-secret within-terraform-secret
       env:
         FILE_DATA: ${{ secrets.SSH_PRIVATE_KEY }}
         GIT_SSH_COMMAND: "ssh -i ~/.ssh/id_rsa -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no"
