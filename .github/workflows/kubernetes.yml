@@ -1,0 +1,57 @@
+name: "Kubernetes"
+on: 
+  push:
+    branches:
+    - master
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - name: Build container image
+      uses: actions/docker/cli@master
+      with:
+        args: build -t xena/maison:$(echo $GITHUB_SHA | head -c7) .
+    - name: Docker Login
+      uses: actions/docker/login@master
+      env:
+        DOCKER_USERNAME: "xena"
+        DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+    - name: Push image to Docker Hub
+      uses: actions/docker/cli@master
+      with:
+        args: push xena/maison
+    - name: Download secrets
+      run: |
+        mkdir ~/.ssh
+        echo $FILE_DATA | base64 -d > ~/.ssh/id_rsa
+        md5sum ~/.ssh/id_rsa
+        chmod 600 ~/.ssh/id_rsa
+        git clone git@ssh.tulpa.dev:cadey/within-terraform-secret /github/workspace/within-terraform-secret
+      env:
+        FILE_DATA: ${{ secrets.SSH_PRIVATE_KEY }}
+        GIT_SSH_COMMAND: "ssh -i ~/.ssh/id_rsa -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no"
+    - name: Use Dyson
+      uses: "docker://xena/dyson:0.1.0"
+      with:
+        args: |
+          --name=maison \
+          --domain=maison.within.website \
+          --dockerImage=xena/maison:$(echo $GITHUB_SHA | head -c7) \
+          --containerPort=5000 \
+          --replicas=1 \
+          --useProdLE=true > /github/workspace/deploy.yml
+    - name: Save DigitalOcean kubeconfig
+      uses: digitalocean/action-doctl@master
+      env:
+        DIGITALOCEAN_ACCESS_TOKEN: ${{ secrets.DIGITALOCEAN_TOKEN }}
+      with:
+        args: kubernetes cluster kubeconfig show kubermemes > $GITHUB_WORKSPACE/.kubeconfig
+    - name: Deploy to DigitalOcean Kubernetes
+      uses: docker://lachlanevenson/k8s-kubectl
+      with:
+        args: --kubeconfig=/github/workspace/.kubeconfig apply -n apps -f /github/workspace/deploy.yml
+    - name: Verify deployment
+      uses: docker://lachlanevenson/k8s-kubectl
+      with:
+        args: --kubeconfig=/github/workspace/.kubeconfig rollout status -n apps deployment/christinewebsite
