@@ -44,10 +44,6 @@ jobs:
           --containerPort=5000 \
           --replicas=1 \
           --useProdLE=true > $HOME/deploy.yml
-    - uses: actions/upload-artifact@master
-      with:
-        name: deploy.yml
-        path: $HOME/deploy.yml
     - name: Save DigitalOcean kubeconfig
       uses: digitalocean/action-doctl@master
       env:
