@@ -16,6 +16,7 @@ jobs:
         chmod 600 ~/.ssh/id_rsa
         $GIT_SSH_COMMAND git@ssh.tulpa.dev
         git clone git@ssh.tulpa.dev:cadey/within-terraform-secret within-terraform-secret
+        pwd
       env:
         FILE_DATA: ${{ secrets.SSH_PRIVATE_KEY }}
         GIT_SSH_COMMAND: "ssh -i ~/.ssh/id_rsa -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no"
@@ -42,6 +43,10 @@ jobs:
           --containerPort=5000 \
           --replicas=1 \
           --useProdLE=true > /github/workspace/deploy.yml
+    - uses: actions/upload-artifact@master
+      with:
+        name: deploy.yml
+        path: deploy.yml
     - name: Save DigitalOcean kubeconfig
       uses: digitalocean/action-doctl@master
       env:
