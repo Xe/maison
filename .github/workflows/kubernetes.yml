@@ -47,7 +47,7 @@ jobs:
     - uses: actions/upload-artifact@master
       with:
         name: deploy.yml
-        path: deploy.yml
+        path: $HOME/deploy.yml
     - name: Save DigitalOcean kubeconfig
       uses: digitalocean/action-doctl@master
       env:
