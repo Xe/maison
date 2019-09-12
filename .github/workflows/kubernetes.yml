@@ -51,9 +51,9 @@ jobs:
         GitCheckout = "./within-terraform-secret"' > ~/.config/dyson/dyson.ini
         
         ./dyson manifest \
-          --name=christinewebsite \
-          --domain=christine.website \
-          --dockerImage=xena/christinewebsite:$GITHUB_SHA \
+          --name=maison \
+          --domain=maison.within.website \
+          --dockerImage=xena/maison:$GITHUB_SHA \
           --containerPort=5000 \
           --replicas=1 \
           --useProdLE=true > $GITHUB_WORKSPACE/deploy.yml
