@@ -37,7 +37,7 @@ jobs:
       uses: "docker://xena/dyson:0.1.0"
       with:
         entrypoint: sh
-        args: -c 'manifest --name=maison --domain=maison.within.website --dockerImage=xena/maison:$GITHUB_SHA --containerPort=5000 --replicas=1 --useProdLE=true > $HOME/deploy.yml'
+        args: -c '/entrypoint.sh manifest --name=maison --domain=maison.within.website --dockerImage=xena/maison:$GITHUB_SHA --containerPort=5000 --replicas=1 --useProdLE=true > $HOME/deploy.yml'
     - name: Save DigitalOcean kubeconfig
       uses: digitalocean/action-doctl@master
       env:
