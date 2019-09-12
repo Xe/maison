@@ -33,11 +33,30 @@ jobs:
       uses: actions/docker/cli@master
       with:
         args: push xena/maison
-    - name: Use Dyson
-      uses: "docker://xena/dyson:0.1.0"
-      with:
-        entrypoint: sh
-        args: -c '/entrypoint.sh manifest --name=maison --domain=maison.within.website --dockerImage=xena/maison:$GITHUB_SHA --containerPort=5000 --replicas=1 --useProdLE=true > $HOME/deploy.yml'
+    - name: Dyson
+      run: |
+        curl https://xena.greedo.xeserv.us/files/dyson-linux-amd64-0.1.0.tgz | tar xz 
+        cp ./dyson-linux-amd64-0.1.0/dyson .
+        rm -rf dyson-linux-amd64-0.1.0
+        mkdir -p ~/.config/dyson
+        
+        echo '[DigitalOcean]
+        Token = ""
+        
+        [Cloudflare]
+        Email = ""
+        Token = ""
+        
+        [Secrets]
+        GitCheckout = "./within-terraform-secret"' > ~/.config/dyson/dyson.ini
+        
+        ./dyson manifest \
+          --name=christinewebsite \
+          --domain=christine.website \
+          --dockerImage=xena/christinewebsite:$GITHUB_SHA \
+          --containerPort=5000 \
+          --replicas=1 \
+          --useProdLE=true > $GITHUB_WORKSPACE/deploy.yml
     - name: Save DigitalOcean kubeconfig
       uses: digitalocean/action-doctl@master
       env:
@@ -47,7 +66,7 @@ jobs:
     - name: Deploy to DigitalOcean Kubernetes
       uses: docker://lachlanevenson/k8s-kubectl
       with:
-        args: --kubeconfig=/github/workspace/.kubeconfig apply -n apps -f $HOME/deploy.yml
+        args: --kubeconfig=/github/workspace/.kubeconfig apply -n apps -f /github/workspace/deploy.yml
     - name: Verify deployment
       uses: docker://lachlanevenson/k8s-kubectl
       with:
