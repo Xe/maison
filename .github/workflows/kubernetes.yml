@@ -22,7 +22,7 @@ jobs:
         GIT_SSH_COMMAND: "ssh -i ~/.ssh/id_rsa -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no"
     - name: Build container image
       run: |
-        docker build -t xena/maison:$(echo $GITHUB_SHA | head -c7) .
+        docker build -t xena/maison:$GITHUB_SHA .
         docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD 
         docker push xena/maison
       env:
