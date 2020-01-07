@@ -13,6 +13,9 @@ function updateLoop (state, emitter) {
     setInterval(function() {
         emitter.emit("check_data");
     }, 180000);
+    setInterval(function() {
+        state.currentTime = now();
+    }, 30000);
 }
 
 function mainView (state, emit) {
@@ -28,10 +31,11 @@ function mainView (state, emit) {
                     <span id="feels">${state.weather.currently.summary}</span><br />
                     H/L: ${Math.round(state.weather.daily.data[0].temperatureHigh)}°C/${Math.round(state.weather.daily.data[0].temperatureLow)}°C<br />
                     Feels like: ${Math.round(state.weather.currently.apparentTemperature)}°C<br />
-                    Humidity: ${state.weather.currently.humidity * 100}%
+                    Humidity: ${state.weather.currently.humidity * 100}%<br />
+                    ${state.weather.daily.summary}
                   </p>
                 </td>
-                <td id="currently">
+                <td class="currently">
                   <p>${Math.round(state.weather.currently.temperature)}</p>
                 </td>
               </tr>
@@ -39,9 +43,11 @@ function mainView (state, emit) {
             <p>${state.weather.daily.summary}</p>
 
             <h2>System Status</h2>
-            <p>Current front: ${state.front}</p>
-
-            <p>Last updated at ${state.now}</p>
+            <p>
+              Current front: ${state.front}<br />
+              Last updated at ${state.now}<br />
+              <span class="currently">${state.currentTime}</span>
+            </p>
           </div>
         `;
     } else {
@@ -63,15 +69,21 @@ function jsonOf(route) {
     return fetch(route).then(response => response.json());
 }
 
+function now() {
+    let today = new Date();
+    return today.getHours() + ":" + today.getMinutes();
+}
+
 function dataStore (state, emitter) {
     state.now = "";
     state.weather = {};
     state.front = "";
     state.gottenData = false;
+    state.currentTime = now();
     emitter.on("check_data", async function () {
         console.log("got more data");
         let today = new Date();
-        state.now = today.getHours() + ":" + today.getMinutes();
+        state.now = now();
         state.weather = (await jsonOf("/api/weather"));
         state.front = (await jsonOf("/api/front")).who;
         state.gottenData = true;

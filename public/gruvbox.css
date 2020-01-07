@@ -36,11 +36,10 @@ pre {
   border: 0;
 }
 
-#currently {
+.currently {
     text-align: center;
     margin: auto;
     align: center;
-    padding: 1em;
     font-size: 450%;
 }
 
