@@ -25,6 +25,9 @@ jobs:
         docker build -t xena/maison:$(echo $GITHUB_SHA | head -c7) .
         docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD 
         docker push xena/maison
+      env:
+        DOCKER_USERNAME: "xena"
+        DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
     - name: Dyson
       run: |
         curl https://xena.greedo.xeserv.us/files/dyson-linux-amd64-0.1.0.tgz | tar xz 
