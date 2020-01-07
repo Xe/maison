@@ -11,7 +11,7 @@ function mainView (state, emit) {
     if(state.gottenData) {
         document.body.style.backgroundImage = `url('/img/${state.front.toLowerCase()}.png')`;
         return html`
-          <div id="content">
+          <div id="content" onclick=${onclick}>
             <h2>Current Weather in Montreal</h2>
             <table>
               <tr>
