@@ -23,7 +23,7 @@ jobs:
     - name: Build container image
       run: |
         docker build -t xena/maison:$(echo $GITHUB_SHA | head -c7) .
-        echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
+        docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD 
         docker push xena/maison
     - name: Dyson
       run: |
