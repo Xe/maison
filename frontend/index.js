@@ -25,6 +25,7 @@ function updateLoop (state, emitter) {
     }, 180000);
     setInterval(function() {
         state.currentTime = showTime();
+        emitter.emit("render");
     }, 30000);
 }
 
