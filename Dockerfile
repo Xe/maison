@@ -1,5 +1,5 @@
-FROM xena/nim:0.20.2 AS build
-RUN apk --no-cache add npm
+FROM xena/nim:1.0.4 AS build
+RUN apk --no-cache add npm libstdc++
 WORKDIR /maison
 COPY . .
 RUN nimble setup
