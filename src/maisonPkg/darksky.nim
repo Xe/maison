@@ -8,10 +8,25 @@ type
     temperature*: float
     apparentTemperature*: float
     humidity*: float
+    icon*: string
+
+  Daily* = object
+    ## Daily info
+    summary*: string
+    icon*: string
+    data*: seq[WeatherData]
+
+  WeatherData* = object
+    ## detailed weather data
+    time*: int
+    icon*: string
+    temperatureHigh*: float
+    temperatureLow*: float
 
   Weather* = object
     ## A simplified view of DarkSky weather
     currently*: WeatherStatus
+    daily*: Daily
 
 proc getCurrentWeather(apiKey: string, loc: string, hc = newAsyncHttpClient()): Future[Weather] {.async.} =
   let url = fmt"https://api.darksky.net/forecast/{apiKey}/{loc}?units=si"

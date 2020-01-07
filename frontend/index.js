@@ -9,14 +9,26 @@ app.mount("div#content");
 
 function mainView (state, emit) {
     if(state.gottenData) {
+        document.body.style.backgroundImage = `url('/img/${state.front.toLowerCase()}.png')`;
         return html`
           <div id="content">
-            <h1>Données pour notre maison</h1>
-
-            <h2>Current Weather in Montreal</h1>
-            <p>Summary: ${state.weather.summary}</p>
-            <p>Currently: ${state.weather.temperature}°, Feels like: ${state.weather.apparentTemperature}°</p>
-            <p>Humidity: ${state.weather.humidity * 100}%</p>
+            <h2>Current Weather in Montreal</h2>
+            <table>
+              <tr>
+                <td>
+                  <p>
+                    <span id="feels">${state.weather.currently.summary}</span><br />
+                    H/L: ${Math.round(state.weather.daily.data[0].temperatureHigh)}°C/${Math.round(state.weather.daily.data[0].temperatureLow)}°C<br />
+                    Feels like: ${Math.round(state.weather.currently.apparentTemperature)}°C<br />
+                    Humidity: ${state.weather.currently.humidity * 100}%
+                  </p>
+                </td>
+                <td id="currently">
+                  <p>${Math.round(state.weather.currently.temperature)}</p>
+                </td>
+              </tr>
+            </table>
+            <p>${state.weather.daily.summary}</p>
 
             <h2>System Status</h2>
             <p>Current front: ${state.front}</p>
@@ -46,7 +58,7 @@ function dataStore (state, emitter) {
     state.front = "";
     state.gottenData = false;
     emitter.on("check_data", async function () {
-        state.weather = (await jsonOf("/api/weather")).currently;
+        state.weather = (await jsonOf("/api/weather"));
         state.front = (await jsonOf("/api/front")).who;
         state.gottenData = true;
         emitter.emit("render");
