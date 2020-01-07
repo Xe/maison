@@ -1,0 +1,26 @@
+{
+    "dir" : "ltr",
+    "lang" : "English",
+    "name" : "Maison",
+    "scope" : "/",
+    "display" : "standalone",
+    "start_url" : "https://maison.within.website/",
+    "short_name" : "Maison",
+    "theme_color" : "transparent",
+    "description" : "",
+    "orientation" : "any",
+    "background_color" : "transparent",
+    "related_applications" : "",
+    "prefer_related_applications" : "false",
+    "icons" : [
+        {
+            "src": "https://maison.within.website/favicon.ico",
+            "sizes": "256x256 128x128 96x96 72x72 64x64 48x48 32x32 24x24 16x16"
+        },
+        {
+            "src": "https://maison.within.website/favicon.png",
+            "sizes": "256x256"
+        }],
+    "screenshots" : [],
+    "generated" : "true"
+}

@@ -5,7 +5,15 @@ var app = choo();
 app.use(dataStore);
 app.route("/", mainView);
 app.route("*", notFoundView);
+app.use(updateLoop);
 app.mount("div#content");
+
+function updateLoop (state, emitter) {
+    console.log("scheduling updates every 3 minutes");
+    setInterval(function() {
+        emitter.emit("check_data");
+    }, 180000);
+}
 
 function mainView (state, emit) {
     if(state.gottenData) {
@@ -32,6 +40,8 @@ function mainView (state, emit) {
 
             <h2>System Status</h2>
             <p>Current front: ${state.front}</p>
+
+            <p>Last updated at ${state.now}</p>
           </div>
         `;
     } else {
@@ -54,10 +64,14 @@ function jsonOf(route) {
 }
 
 function dataStore (state, emitter) {
+    state.now = "";
     state.weather = {};
     state.front = "";
     state.gottenData = false;
     emitter.on("check_data", async function () {
+        console.log("got more data");
+        let today = new Date();
+        state.now = today.getHours() + ":" + today.getMinutes();
         state.weather = (await jsonOf("/api/weather"));
         state.front = (await jsonOf("/api/front")).who;
         state.gottenData = true;

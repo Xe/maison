@@ -8,6 +8,7 @@
     <script src="/bundle.js"></script>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <link rel='manifest' href='/manifest.webmanifest'>
     <link rel="icon" type="image/png" href="/favicon.png">
   </head>
 
@@ -19,5 +20,16 @@
     <footer>
       <p>From <a href="https://within.website">Within</a> - <a href="https://darksky.net/poweredby/">Powered by DarkSky</a></p>
     </footer>
+    <script>
+if ("serviceWorker" in navigator) {
+  if (navigator.serviceWorker.controller) {} else {
+    navigator.serviceWorker
+      .register("/sw.js")
+      .then(function (reg) {
+        console.log("installed for " + reg.scope);
+      });
+  }
+}
+    </script>
   </body>
 </html>
