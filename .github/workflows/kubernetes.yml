@@ -21,18 +21,10 @@ jobs:
         FILE_DATA: ${{ secrets.SSH_PRIVATE_KEY }}
         GIT_SSH_COMMAND: "ssh -i ~/.ssh/id_rsa -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no"
     - name: Build container image
-      uses: actions/docker/cli@master
-      with:
-        args: build -t xena/maison:$GITHUB_SHA .
-    - name: Docker Login
-      uses: actions/docker/login@master
-      env:
-        DOCKER_USERNAME: "xena"
-        DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-    - name: Push image to Docker Hub
-      uses: actions/docker/cli@master
-      with:
-        args: push xena/maison
+      run: |
+        docker build -t xena/maison:$(echo $GITHUB_SHA | head -c7) .
+        echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
+        docker push xena/maison
     - name: Dyson
       run: |
         curl https://xena.greedo.xeserv.us/files/dyson-linux-amd64-0.1.0.tgz | tar xz 
