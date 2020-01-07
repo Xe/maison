@@ -8,13 +8,23 @@ app.route("*", notFoundView);
 app.use(updateLoop);
 app.mount("div#content");
 
+function showTime() {
+    var timeNow = new Date();
+    var hours   = timeNow.getHours();
+    var minutes = timeNow.getMinutes();
+    var seconds = timeNow.getSeconds();
+    var timeString = "" + hours;
+    timeString  += ((minutes < 10) ? ":0" : ":") + minutes;
+    return timeString;
+}
+
 function updateLoop (state, emitter) {
     console.log("scheduling updates every 3 minutes");
     setInterval(function() {
         emitter.emit("check_data");
     }, 180000);
     setInterval(function() {
-        state.currentTime = now();
+        state.currentTime = showTime();
     }, 30000);
 }
 
@@ -32,7 +42,6 @@ function mainView (state, emit) {
                     H/L: ${Math.round(state.weather.daily.data[0].temperatureHigh)}°C/${Math.round(state.weather.daily.data[0].temperatureLow)}°C<br />
                     Feels like: ${Math.round(state.weather.currently.apparentTemperature)}°C<br />
                     Humidity: ${state.weather.currently.humidity * 100}%<br />
-                    ${state.weather.daily.summary}
                   </p>
                 </td>
                 <td class="currently">
@@ -69,21 +78,16 @@ function jsonOf(route) {
     return fetch(route).then(response => response.json());
 }
 
-function now() {
-    let today = new Date();
-    return today.getHours() + ":" + today.getMinutes();
-}
-
 function dataStore (state, emitter) {
     state.now = "";
     state.weather = {};
     state.front = "";
     state.gottenData = false;
-    state.currentTime = now();
+    state.currentTime = showTime();
     emitter.on("check_data", async function () {
         console.log("got more data");
-        let today = new Date();
-        state.now = now();
+        state.now = showTime();
+        state.currentTime = showTime();
         state.weather = (await jsonOf("/api/weather"));
         state.front = (await jsonOf("/api/front")).who;
         state.gottenData = true;

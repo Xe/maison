@@ -43,6 +43,10 @@ pre {
     font-size: 450%;
 }
 
+.tiny {
+    font-size: 75%;
+}
+
 #feels {
     font-size: 125%;
 }
