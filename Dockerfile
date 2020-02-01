@@ -1,4 +1,4 @@
-FROM xena/nim:1.0.4 AS build
+FROM xena/nim:1.0.6 AS build
 RUN apk --no-cache add npm libstdc++
 WORKDIR /maison
 COPY . .
