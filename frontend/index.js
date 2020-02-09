@@ -51,7 +51,6 @@ function mainView (state, emit) {
               </tr>
             </table>
             <p>${state.weather.daily.summary}</p>
-            <div class=${state.weather.daily.icon}></div>
 
             <h2>System Status</h2>
             <p>
