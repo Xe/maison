@@ -9,6 +9,7 @@
   "author": "Cadey",
   "license": "0BSD",
   "dependencies": {
+    "browserify": "^16.5.0",
     "choo": "^7.0.0",
     "nanohtml": "^1.6.3"
   },

@@ -1,9 +1,14 @@
 let
-  pkgs = import <nixpkgs> {};
+  sources = import ./nix/sources.nix;
+  niv = (import sources.niv { }).niv;
+  pkgs = import sources.nixpkgs { };
 in
-pkgs.mkShell {
+with pkgs;
+mkShell {
   buildInputs = [
-    pkgs.nim
-    pkgs.nodejs
+    niv
+    nim
+    nodejs
+    nodePackages.node2nix
   ];
 }
