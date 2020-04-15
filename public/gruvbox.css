@@ -1,5 +1,6 @@
 main {
   backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
   padding: 1em;
   align: center;
   background-color: rgba(40, 40, 40, 0.75);
